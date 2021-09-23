@@ -1,0 +1,25 @@
+# dotenv environment variables file
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Compiled binary addons
+build/Release
+
+# Dependency directories
+node_modules/
+
+# Dashboard Configuration
+config.json
+
+# Flowchart
+*.drawio
