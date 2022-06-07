@@ -30,7 +30,11 @@ const setupSMTP = async () => {
         console.log(chalk.hex('#C41425').bold(
             'SMTP CONFIG:\n'
         ));
+	//  mask password for output
+	passwd = smtp.password;
+	smtp.password = "******";    
         console.log(smtp);
+	smtp.password = passwd;
         return smtp;
     }
 
@@ -63,20 +67,33 @@ const getSettings = async () => {
 
 const run = async () => {
     try {
+        console.log("configOnly=" + configOnly)
+        if (configOnly) {
+          // Check for SMTP configuration
+          const smtp = await setupSMTP();
+          dtAutoReport.configSMTP(smtp);
 
-        // Check for SMTP configuration
-        const smtp = await setupSMTP();
-        dtAutoReport.configSMTP(smtp);
-
-        // Check for dashboard configuration
-        const settings = await getSettings();
-
-        // Send config settings received from inquirer to generate reports
-        await dtAutoReport.createAutoReport(settings);
-
+          // Check for dashboard configuration
+          //const settings = await getSettings();
+          //await dtAutoReport.createAutoReport(settings);
+        } else {
+          //settings = dtAutoReport.getStoredConfig(); 
+          // Send config settings received from inquirer to generate reports
+          await dtAutoReport.createAutoReport(null);
+        }
     } catch (err) {
+        console.log(err.stack)
         return (console.log("An error occurred in main run."));
     }
 };
 
+
+const myArgs = process.argv.slice(2);
+switch (myArgs[0]) {
+  case '-c':
+    configOnly = true;
+    break;
+  default:
+    configOnly = false;
+}
 run()

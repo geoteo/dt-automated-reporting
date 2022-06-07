@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: reportconfig
+data:
+  config.json: |
+    [{"dashboard":"https://XXXXX.live.dynatrace.com/dashboards/19648a6c-YYYY-ZZZZ-a4c8-f4cae49e2eff?auth=dt0c01.XXXX.ZZZZZZ#dashboard;id=19648a6c-XXXX-YYYY-a4c8-f4cae49e2eff;gtf=-24h%20to%20now;gf=7136317898390312102","email":"myemail@company.com","subject":"My Email Subject","fileprefix":"fileprefix","crontab":"0 8 * * *"}]
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mailconfig
+data:
+  dt-automated-reporting.json: |
+    {"smtp": {"host": "smtp.gmail.com","port":587,"user": "sender@company.com}}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dt-reports
+  name: dt-reports
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dt-reports
+  template:
+    metadata:
+      labels:
+        app: dt-reports
+    spec:
+      containers:
+        - name: dt-reports
+          image: docker.io/jfynboh/dt-automated-reporting:0.3
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "2000Mi"
+              cpu: "1000m"
+          volumeMounts:
+          - mountPath: /usr/src/app/mnt/config
+            name: config-volume
+          - mountPath: /usr/src/app/mnt/config/configstore
+            name: config-mail
+      volumes:
+        - name: config-volume
+          configMap:
+            name: reportconfig
+        - name: config-mail
+          configMap:
+            name: mailconfig

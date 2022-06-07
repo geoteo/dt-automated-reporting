@@ -1,6 +1,8 @@
 # Automated Reporting for Dynatrace Dashboards
 > Scheduled email reporting to export Dynatrace dashboards as PDF and PNG files.
 
+# NOTE: This documentation is out of date and is in progress of being updated for the new K8S support.
+
 In an effort to empower Dynatrace dashboards for reporting use cases, I want to introduce an automated reporting feature. This gives users the ability to receive dashboard reports via email on a configurable schedule (e.g. daily, weekly, monthly). Dashboard report emails will include a snapshot of the dashboard attached as a PDF and PNG.
 
 This CLI tool is designed for Dynatrace administrators to configure automated reporting for their users.
