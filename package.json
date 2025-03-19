@@ -3,7 +3,7 @@
     "chalk": "^4.1.2",
     "clear": "^0.1.0",
     "clui": "^0.3.6",
-    "configstore": "^5.0.0",
+    "configstore": "^6.0.0",
     "cron": "^1.8.2",
     "figlet": "^1.5.2",
     "find-remove": "^4.0.4",
